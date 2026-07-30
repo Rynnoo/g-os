@@ -1,0 +1,15 @@
+* text=auto
+
+# These files are consumed directly by Linux tooling, even when the repository
+# is edited or built from Windows.
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.desktop text eol=lf
+*.env text eol=lf
+Containerfile text eol=lf
+Justfile text eol=lf
+system_files/usr/bin/* text eol=lf

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "basic-streaming",
+  "name": "Basic Streaming Setup",
+  "description": "A launchable starter session using the OBS Studio and Chatterino packages currently available in G Store.",
+  "apps": [
+    { "id": "obs-studio", "required": true },
+    { "id": "chatterino", "required": true }
+  ],
+  "launch_order": [
+    "obs-studio",
+    "chatterino"
+  ],
+  "obs": {
+    "profile": "G-OS Basic Streaming",
+    "scene_collection": "G-OS Basic Streaming",
+    "scene": "Gameplay"
+  },
+  "window_layout": {
+    "application_status": "not_implemented",
+    "placements": [
+      {
+        "app_id": "obs-studio",
+        "monitor": 0,
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.72,
+        "height": 1.0,
+        "state": "normal"
+      },
+      {
+        "app_id": "chatterino",
+        "monitor": 0,
+        "x": 0.72,
+        "y": 0.0,
+        "width": 0.28,
+        "height": 1.0,
+        "state": "normal"
+      }
+    ]
+  },
+  "startup_timeout_seconds": 30,
+  "session": {
+    "do_not_disturb": true,
+    "inhibit_sleep": true,
+    "pause_updates": true,
+    "performance_mode": false,
+    "close_apps_on_stop": false
+  }
+}

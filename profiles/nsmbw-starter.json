@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "id": "nsmbw-starter",
+  "name": "New Super Mario Bros. Wii Starter",
+  "description": "A safe starting point for NSMBW runs. Install the listed apps from G Store, then customize your OBS names and saved layout.",
+  "apps": [
+    { "id": "obs-studio", "required": true },
+    { "id": "livesplit-complete", "required": true },
+    { "id": "nsmbw-autosplitter", "required": true },
+    { "id": "google-chrome", "required": false }
+  ],
+  "launch_order": [
+    "obs-studio",
+    "livesplit-complete",
+    "nsmbw-autosplitter",
+    "google-chrome"
+  ],
+  "obs": {
+    "profile": "G-OS NSMBW",
+    "scene_collection": "G-OS NSMBW",
+    "scene": "Gameplay"
+  },
+  "window_layout": {
+    "application_status": "not_implemented",
+    "placements": [
+      {
+        "app_id": "obs-studio",
+        "monitor": 0,
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.65,
+        "height": 1.0,
+        "state": "normal"
+      },
+      {
+        "app_id": "livesplit-complete",
+        "monitor": 0,
+        "x": 0.65,
+        "y": 0.0,
+        "width": 0.35,
+        "height": 0.55,
+        "state": "normal"
+      },
+      {
+        "app_id": "nsmbw-autosplitter",
+        "monitor": 0,
+        "x": 0.65,
+        "y": 0.55,
+        "width": 0.35,
+        "height": 0.45,
+        "state": "normal"
+      }
+    ]
+  },
+  "startup_timeout_seconds": 30,
+  "session": {
+    "do_not_disturb": true,
+    "inhibit_sleep": true,
+    "pause_updates": true,
+    "performance_mode": false,
+    "close_apps_on_stop": false
+  }
+}

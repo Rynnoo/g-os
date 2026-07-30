@@ -1,0 +1,73 @@
+---
+name: Build disk images
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "disk_config/disk.toml"
+      - "disk_config/iso.toml"
+      - ".github/workflows/build-disk.yml"
+
+env:
+  IMAGE_NAME: "g-os"
+  IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"
+  DEFAULT_TAG: "latest"
+  BIB_IMAGE: "quay.io/centos-bootc/bootc-image-builder@sha256:2b52843ea2bfda73b0a08d97e76b734393b1d3a804681b9fabb26723bd3a2f0b"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build ${{ matrix.disk_type }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        disk_type: [qcow2, anaconda-iso]
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
+
+      - name: Prepare image and installer configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          registry="${IMAGE_REGISTRY,,}"
+          image="${IMAGE_NAME,,}"
+          echo "PUBLISHED_IMAGE=${registry}/${image}:${DEFAULT_TAG}" >> "${GITHUB_ENV}"
+          sed -i \
+            "s|ghcr.io/CHANGE_ME/g-os|${registry}/${image}|g" \
+            disk_config/iso.toml
+          echo "USER_UID=$(id -u)" >> "${GITHUB_ENV}"
+          echo "USER_GID=$(id -g)" >> "${GITHUB_ENV}"
+
+      - name: Build disk image
+        id: build
+        uses: osbuild/bootc-image-builder-action@8661cd3832544ad68c12dcde8681b13ab0f56a8d # main
+        with:
+          builder-image: ${{ env.BIB_IMAGE }}
+          config-file: ${{ matrix.disk_type == 'anaconda-iso' && './disk_config/iso.toml' || './disk_config/disk.toml' }}
+          image: ${{ env.PUBLISHED_IMAGE }}
+          chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
+          types: ${{ matrix.disk_type }}
+          additional-args: --use-librepo=True
+
+      - name: Upload disk image
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: g-os-${{ matrix.disk_type }}
+          path: ${{ steps.build.outputs.output-directory }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

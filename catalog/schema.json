@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://g-os.invalid/schemas/g-store-catalog-v1.json",
+  "title": "G Store catalog v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "apps"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "apps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/app" }
+    }
+  },
+  "$defs": {
+    "httpsUrlOrNull": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "format": "uri", "pattern": "^https://" }
+      ]
+    },
+    "install": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backend", "remote", "ref"],
+      "properties": {
+        "backend": { "const": "flatpak" },
+        "remote": { "const": "flathub" },
+        "ref": {
+          "enum": [
+            "com.obsproject.Studio",
+            "com.chatterino.chatterino",
+            "com.usebottles.bottles"
+          ]
+        }
+      }
+    },
+    "app": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "name", "summary", "description", "category", "status",
+        "enabled", "tags", "homepage", "source", "notes", "install"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["available", "planned", "disabled"] },
+        "enabled": { "type": "boolean" },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "homepage": { "$ref": "#/$defs/httpsUrlOrNull" },
+        "source": { "$ref": "#/$defs/httpsUrlOrNull" },
+        "notes": { "type": "string", "minLength": 1 },
+        "install": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/install" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "available" } } },
+          "then": {
+            "properties": {
+              "enabled": { "const": true },
+              "install": { "$ref": "#/$defs/install" }
+            }
+          },
+          "else": {
+            "properties": {
+              "enabled": { "const": false },
+              "install": { "type": "null" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

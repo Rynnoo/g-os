@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+set -euo pipefail
+
+entrypoint="/usr/libexec/g-os/apps/g-store/main.py"
+if [[ ! -f "${entrypoint}" ]]; then
+  message="G Store is not installed correctly: ${entrypoint} is missing."
+  if command -v kdialog >/dev/null 2>&1; then
+    kdialog --error "${message}" --title "G Store"
+  fi
+  echo "${message}" >&2
+  exit 1
+fi
+
+exec /usr/bin/python3 "${entrypoint}" "$@"

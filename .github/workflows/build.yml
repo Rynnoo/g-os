@@ -1,0 +1,73 @@
+---
+name: Build container image
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**/README.md"
+  schedule:
+    - cron: "05 10 * * *"
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: "g-os"
+  IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"
+  DEFAULT_TAG: "latest"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build G-OS
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
+
+      - name: Run unit and integration tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Build image
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo podman build --pull=newer \
+            --tag "${IMAGE_NAME}:${DEFAULT_TAG}" \
+            --file Containerfile .
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        shell: bash
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          printf '%s' "${GHCR_TOKEN}" | sudo podman login ghcr.io \
+            --username "${{ github.actor }}" \
+            --password-stdin
+
+      - name: Push image
+        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        shell: bash
+        run: |
+          set -euo pipefail
+          registry="${IMAGE_REGISTRY,,}"
+          image="${IMAGE_NAME,,}"
+          sudo podman push \
+            "${IMAGE_NAME}:${DEFAULT_TAG}" \
+            "${registry}/${image}:${DEFAULT_TAG}"
+
+      # Image signing will be added after the project chooses either keyless
+      # signing or provisions a real repository secret. No placeholder key is
+      # embedded in this starter workflow.

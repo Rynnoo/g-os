@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://g-os.dev/schemas/g-mode-profile-v1.json",
+  "title": "G Mode profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "apps",
+    "launch_order",
+    "obs",
+    "window_layout",
+    "startup_timeout_seconds",
+    "session"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "name": { "allOf": [{ "$ref": "#/$defs/safeString" }, { "minLength": 1 }] },
+    "description": { "$ref": "#/$defs/safeString" },
+    "apps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "required": { "type": "boolean", "default": true }
+        }
+      }
+    },
+    "launch_order": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "obs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "scene_collection", "scene"],
+      "properties": {
+        "profile": { "allOf": [{ "$ref": "#/$defs/safeString" }, { "minLength": 1 }] },
+        "scene_collection": { "allOf": [{ "$ref": "#/$defs/safeString" }, { "minLength": 1 }] },
+        "scene": { "allOf": [{ "$ref": "#/$defs/safeString" }, { "minLength": 1 }] }
+      }
+    },
+    "window_layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["application_status", "placements"],
+      "properties": {
+        "application_status": {
+          "const": "not_implemented",
+          "description": "G Mode v0.1 stores placements but does not apply them."
+        },
+        "placements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["app_id", "monitor", "x", "y", "width", "height"],
+            "properties": {
+              "app_id": { "$ref": "#/$defs/id" },
+              "monitor": { "type": "integer", "minimum": 0 },
+              "x": { "type": "number", "minimum": 0, "maximum": 1 },
+              "y": { "type": "number", "minimum": 0, "maximum": 1 },
+              "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "state": { "enum": ["normal", "maximized", "fullscreen"], "default": "normal" }
+            }
+          }
+        }
+      }
+    },
+    "startup_timeout_seconds": { "type": "integer", "minimum": 1, "maximum": 300 },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "do_not_disturb",
+        "inhibit_sleep",
+        "pause_updates",
+        "performance_mode",
+        "close_apps_on_stop"
+      ],
+      "properties": {
+        "do_not_disturb": { "type": "boolean" },
+        "inhibit_sleep": { "type": "boolean" },
+        "pause_updates": { "type": "boolean" },
+        "performance_mode": { "type": "boolean" },
+        "close_apps_on_stop": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "safeString": {
+      "type": "string",
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]*$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"
+    }
+  }
+}

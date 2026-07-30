@@ -1,0 +1,8 @@
+cosign.key
+_build-*
+output/
+__pycache__/
+*.py[cod]
+.venv/
+.idea/
+.vscode/

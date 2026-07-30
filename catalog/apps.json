@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "apps": [
+    {
+      "id": "obs-studio",
+      "name": "OBS Studio",
+      "summary": "Record and stream speedruns.",
+      "description": "Create scenes, capture games and devices, mix audio, record local proof, and stream to supported services.",
+      "category": "Capture & Streaming",
+      "status": "available",
+      "enabled": true,
+      "tags": ["obs", "recording", "streaming", "capture"],
+      "homepage": "https://obsproject.com/",
+      "source": "https://flathub.org/apps/com.obsproject.Studio",
+      "notes": "Installs the OBS Project Flathub build. Capture cards and hardware encoders still require real-hardware testing.",
+      "install": {
+        "backend": "flatpak",
+        "remote": "flathub",
+        "ref": "com.obsproject.Studio"
+      }
+    },
+    {
+      "id": "chatterino",
+      "name": "Chatterino",
+      "summary": "A focused Twitch chat client.",
+      "description": "Keep stream chat in a dedicated, customizable desktop window while running or moderating.",
+      "category": "Chat",
+      "status": "available",
+      "enabled": true,
+      "tags": ["twitch", "chat", "stream"],
+      "homepage": "https://chatterino.com/",
+      "source": "https://flathub.org/apps/com.chatterino.chatterino",
+      "notes": "Installs the Chatterino package published on Flathub.",
+      "install": {
+        "backend": "flatpak",
+        "remote": "flathub",
+        "ref": "com.chatterino.chatterino"
+      }
+    },
+    {
+      "id": "bottles",
+      "name": "Bottles",
+      "summary": "Run selected Windows applications in managed environments.",
+      "description": "Create isolated Wine environments for Windows tools that do not yet have a native Linux build.",
+      "category": "Compatibility",
+      "status": "available",
+      "enabled": true,
+      "tags": ["wine", "windows", "compatibility"],
+      "homepage": "https://usebottles.com/",
+      "source": "https://flathub.org/apps/com.usebottles.bottles",
+      "notes": "Installing Bottles does not certify every Windows timer or component. G-OS will validate those combinations individually.",
+      "install": {
+        "backend": "flatpak",
+        "remote": "flathub",
+        "ref": "com.usebottles.bottles"
+      }
+    },
+    {
+      "id": "google-chrome",
+      "name": "Google Chrome",
+      "summary": "Google's web browser for Linux.",
+      "description": "Browse leaderboard sites, stream dashboards, guides, and web-based speedrunning tools.",
+      "category": "Browser",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["chrome", "browser", "web"],
+      "homepage": "https://www.google.com/chrome/",
+      "source": "https://support.google.com/chrome/answer/16737616",
+      "notes": "Google provides a 64-bit Fedora RPM, not an official Flathub package. G-OS must finalize image-level repository, update, and redistribution handling before enabling it.",
+      "install": null
+    },
+    {
+      "id": "livesplit-complete",
+      "name": "LiveSplit Complete",
+      "summary": "Classic LiveSplit with a curated G-OS setup.",
+      "description": "The planned bundle will include the timer plus tested layouts, components, and compatibility settings.",
+      "category": "Timers",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["livesplit", "timer", "components", "autosplitter"],
+      "homepage": "https://livesplit.org/",
+      "source": "https://github.com/LiveSplit/LiveSplit",
+      "notes": "Classic LiveSplit is a Windows application. G-OS plans a managed Bottles/Wine bundle, but every component and autosplitter must be validated before certification.",
+      "install": null
+    },
+    {
+      "id": "scu",
+      "name": "SCU",
+      "summary": "First-party speedrun capture utility.",
+      "description": "A G-OS project intended to simplify capture and speedrunning workflows.",
+      "category": "G-OS Tools",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["scu", "capture", "g-os", "first-party"],
+      "homepage": null,
+      "source": null,
+      "notes": "First-party project. Its Linux build, dependencies, device access, and package format must be reviewed before G Store can enable installation.",
+      "install": null
+    },
+    {
+      "id": "autosplit64",
+      "name": "AutoSplit64",
+      "summary": "First-party automatic splitting tool.",
+      "description": "A G-OS project for automated timer control in supported speedruns.",
+      "category": "Autosplitting",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["autosplit64", "autosplitter", "timer", "first-party"],
+      "homepage": null,
+      "source": null,
+      "notes": "First-party project. Linux process access, timer integration, supported targets, and packaging must be validated before release.",
+      "install": null
+    },
+    {
+      "id": "nsmbw-autosplitter",
+      "name": "NSMBW Autosplitter",
+      "summary": "Automatic splits for New Super Mario Bros. Wii.",
+      "description": "A first-party G-OS autosplitter planned for the NSMBW speedrunning pack.",
+      "category": "Autosplitting",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["nsmbw", "wii", "dolphin", "autosplitter"],
+      "homepage": null,
+      "source": null,
+      "notes": "The target Dolphin version, Linux process access, timer bridge, and behavior across game regions need certification before one-click installation.",
+      "install": null
+    },
+    {
+      "id": "gcord",
+      "name": "Gcord",
+      "summary": "First-party communication tool for G-OS runners.",
+      "description": "A G-OS project planned for speedrunning community and session workflows.",
+      "category": "Chat",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["gcord", "chat", "community", "first-party"],
+      "homepage": null,
+      "source": null,
+      "notes": "First-party project. Runtime, authentication, Linux integration, and packaging details must be reviewed before enabling it.",
+      "install": null
+    },
+    {
+      "id": "retrospy",
+      "name": "RetroSpy",
+      "summary": "Display controller inputs from retro consoles and computers.",
+      "description": "RetroSpy is the next iteration of NintendoSpy and provides Linux downloads for its input-display tools.",
+      "category": "Input Display",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["retrospy", "nintendospy", "controller", "input display", "serial"],
+      "homepage": "https://retro-spy.com/",
+      "source": "https://github.com/retrospy/RetroSpy",
+      "notes": "Preferred successor to NintendoSpy. G-OS needs a maintained package plus safe serial/udev permissions and real-device testing on its Fedora base.",
+      "install": null
+    },
+    {
+      "id": "nintendospy",
+      "name": "NintendoSpy (Legacy)",
+      "summary": "Legacy Windows controller-input viewer.",
+      "description": "NintendoSpy displays inputs from supported Nintendo consoles through its viewer and Arduino interface.",
+      "category": "Input Display",
+      "status": "planned",
+      "enabled": false,
+      "tags": ["nintendospy", "controller", "input display", "windows", "legacy"],
+      "homepage": "https://github.com/jaburns/NintendoSpy",
+      "source": "https://github.com/jaburns/NintendoSpy",
+      "notes": "The upstream owner says it is not actively developed, and its viewer is a Windows application. RetroSpy is the preferred path; legacy Wine support would require separate testing.",
+      "install": null
+    }
+  ]
+}
